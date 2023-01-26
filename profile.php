@@ -1,79 +1,45 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
+use Phpml\Classification\NaiveBayes;
 
-use Phpml\Classification\MLPClassifier;
-use Phpml\NeuralNetwork\ActivationFunction\PReLU;
-use Phpml\NeuralNetwork\ActivationFunction\Sigmoid;
-use Phpml\NeuralNetwork\Layer;
-use Phpml\NeuralNetwork\Node\Neuron;
+$samples = [[1, 2, 8], [1, 4, 5, 6], [2, 3, 4, 7], [3, 4, 8, 9]];
 
-$illnesses = ['allergies', 'flu', 'cold', 'coronavirus'];
-$symptoms = [[1, 0, 0, 1, 0, 1, 1, 0, 0, 0], [0, 1, 1, 1, 1, 0, 0, 0, 1, 1], [1, 0, 1, 0, 0, 1, 0, 1, 1, 0], [1, 1, 1, 0, 1, 0, 0, 0, 0, 0]];
+$labels = ['corona virus', 'allergies', 'cold', 'flu'];
 
-// Create layers
-$layer1 = new Layer(2, Neuron::class, new PReLU);
-$layer2 = new Layer(2, Neuron::class, new Sigmoid);
+$classifier = new NaiveBayes();
+$classifier->train($samples, $labels);
 
-// Create MLP classifier
-$mlp = new MLPClassifier(4, [$layer1, $layer2], $illnesses);
+$symptoms = [
+    'cough' => 1,
+    'fever' => 2,
+    'sore throat' => 3,
+    'runny nose' => 4,
+    'nausea' => 5,
+    'loss of smell or taste' => 6,
+    'body aches' => 7,
+    'shortness of breath' => 8,
+    'muscle aches' => 9,
+    'chills' => 10,
+    'sweating' => 11,
+    'chest pain' => 12,
+    'back pain' => 13,
+    'abdominal pain' => 14,
+    'diarrhea' => 15,
+    'constipation' => 16,
+    'blood in stools' => 17,
+    'blurred vision' => 18,
+    'eye pain' => 19,
+    'ear pain' => 20,
+    'nosebleed' => 21,
+    'skin rash' => 22,
+    'joint pain' => 23,
+    'swollen lymph nodes' => 24,
+    'none' => 25
+];
 
-// Create symptoms weight arrays
-$symptoms_weights_allergies = [2, 1, 1, 2, 2, 1, 1, 1, 1, 1];
-$symptoms_weights_flu = [1, 2, 2, 1, 1, 1, 1, 1, 2, 1];
-$symptoms_weights_cold = [1, 2, 1, 1, 2, 1, 1, 1, 1, 2];
-$symptoms_weights_coronavirus = [1, 2, 2, 1, 1, 1, 1, 2, 1, 1];
+$inputSymptoms = [1,2,8];
 
-// Multiply the symptoms by the weight
-$symptoms_allergies = array_map(function($symptom) use ($symptoms_weights_allergies){
-    return array_map(function($value, $weight) {
-        return $value*$weight;
-    }, $symptom, $symptoms_weights_allergies);
-}, $symptoms);
+$predict = $classifier->predict($inputSymptoms);
 
-$symptoms_flu = array_map(function($symptom) use ($symptoms_weights_flu){
-    return array_map(function($value, $weight) {
-        return $value*$weight;
-    }, $symptom, $symptoms_weights_flu);
-}, $symptoms);
-
-$symptoms_cold = array_map(function($symptom) use ($symptoms_weights_cold){
-    return array_map(function($value, $weight) {
-        return $value*$weight;
-    }, $symptom, $symptoms_weights_cold);
-}, $symptoms);
-
-$symptoms_coronavirus = array_map(function($symptom) use ($symptoms_weights_coronavirus){
-    return array_map(function($value, $weight) {
-        return $value*$weight;
-    }, $symptom, $symptoms_weights_coronavirus);
-}, $symptoms);
-// Create labels array
-$symptoms_labels = ['sneezing', 'cough', 'fever', 'runny nose', 'sore throat', 'diarrhea', 'rash', 'shortness of breath', 'fatigue', 'headache'];
-
-// Train the classifier
-$mlp->train($symptoms_allergies, $illnesses);
-$mlp->train($symptoms_flu, $illnesses);
-$mlp->train($symptoms_cold, $illnesses);
-$mlp->train($symptoms_coronavirus, $illnesses);
-
-// Store the actual symptoms
-$actual_symptoms = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-// Make a prediction
-$predicted_illness = $mlp->predict($actual_symptoms);
-
-// Print the prediction
-echo "Predicted illness: " . $predicted_illness . "\n";
-
-// Print the actual symptoms
-echo "Actual Symptoms: ";
-$symptoms_count = count($symptoms_labels);
-foreach ($symptoms_labels as $index => $symptom) {
-    if ($actual_symptoms[$index] == 1) {
-        echo $symptom;
-        if($index < $symptoms_count-1) {
-            echo ", ";
-        }
-    }
-}
+echo $predict;
 ?>
