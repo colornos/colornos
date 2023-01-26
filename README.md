@@ -10,4 +10,3 @@ Team Colornos
 <!--
 **colornos/colornos** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 -->
-"To improve the quality of health information by making it more efficient and effective through cutting-edge technology solutions."
