@@ -1,6 +1,9 @@
 ### Hi there 👋
-This PHP-ML example is used under the profile page of colornos.com
-Feel free to update to make it better.
+This PHP-ML example uses NaiveBayes Classifier to make predictions and is used under the profile page of colornos.com
+
+NaiveBayes Classifier is based on applying Bayes' theorem with strong (naive) independence assumptions between the features.
+
+Feel free to update and make it better. I dare you.
 
 Thanks,
 Team Colornos
