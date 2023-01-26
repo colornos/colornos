@@ -3,7 +3,7 @@ This PHP-ML example uses the NaiveBayes Classifier to make predictions and is us
 
 NaiveBayes Classifier is based on applying Bayes' theorem with strong (naive) independence assumptions between the features.
 
-Feel free to update and make it better. I dare you.
+Feel free to update and make it better. Include the accredited source (it will be cross referenced) if you want it added to the master.
 
 Thanks,
 Team Colornos
